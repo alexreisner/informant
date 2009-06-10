@@ -92,6 +92,23 @@ module Informant
       value = (@object.new_record? ? "Create" : "Update") if value.nil?
       super
     end
+
+    ##
+    # Render a field label.
+    #
+    def label(method, text = nil, options = {})
+      colon = options[:colon].nil? ? false : options[:colon]
+      options.delete :colon
+      options[:for] = options[:label_for]
+      options.delete :label_for
+      if text.blank?
+        text = method.to_s.humanize 
+      else
+        text = text.to_s
+      end
+      text += ':' if colon
+      super
+    end
     
     
     protected # -----------------------------------------------------------------
@@ -147,23 +164,6 @@ module Informant
 	      #{"<p class=\"field_description\">#{l[:description]}</p>" unless l[:description].blank?}
 	    </div>
 	    END
-    end
-
-    ##
-    # Render a field label.
-    #
-    def label(method, text = nil, options = {})
-      colon = options[:colon].nil? ? false : options[:colon]
-      options.delete :colon
-      options[:for] = options[:label_for]
-      options.delete :label_for
-      if text.blank?
-        text = method.to_s.humanize 
-      else
-        text = text.to_s
-      end
-      text += ':' if colon
-      super
     end
   end
 end
