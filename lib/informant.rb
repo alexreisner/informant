@@ -12,21 +12,21 @@ module Informant
     ##
     # Run already-defined helpers through our "shell".
     #
-    helpers = field_helpers + %w(select time_zone_select date_select) -
+    helpers = field_helpers +
+      %w(select time_zone_select date_select) -
       %w(hidden_field fields_for label)
     helpers.each do |h|
       define_method h do |field, *args|
         options = args.detect { |a| a.is_a?(Hash) } || {}
-        prefix = 'standard'
         case h 
         when 'check_box':
-          template = "#{prefix}_check_box_field"
+          template = "check_box_field"
           options[:colon] = false
         #when 'radio_button':
-        #  template = "#{prefix}_radio_button_field"
+        #  template = "radio_button_field"
         #  options[:colon] = false
         else
-          template = "#{prefix}_field"
+          template = "default_field"
         end
         all_options = options.clone
         options.reject!{ |i,j| @@custom_options.include? i }
@@ -42,9 +42,7 @@ module Informant
       options[:start_year]    ||= 1801
       options[:end_year]      ||= Time.now.year
       options[:label_for]       = "#{object_name}_#{method}_1i"
-		  build_shell(method, options) do
-        super
-		  end
+		  build_shell(method, options) { super }
     end
     
     ##
@@ -83,7 +81,7 @@ module Informant
     #
     def integer_select(method, options = {})
       choices = options[:first]..options[:last]
-		  build_shell(method, options){ select method, choices, options }
+		  build_shell(method, options) { select method, choices, options }
     end
     
     ##
@@ -101,7 +99,7 @@ module Informant
     ##
     # Insert a field into its HTML "shell".
     #
-    def build_shell(method, options, template = 'standard_field')
+    def build_shell(method, options, template = 'default_field')
 
       # Build new options hash for custom label options.
       label_options = options.reject{ |i,j| !@@custom_label_options.include? i }
@@ -127,9 +125,8 @@ module Informant
 
     ##
     # Render standard field template.
-    # Store in method rather than external file for speed.
     #
-    def standard_field_template(l = {})
+    def default_field_template(l = {})
       <<-END
       <div id="#{l[:div_id]}" class="field">
 	      #{l[:label]}
@@ -143,7 +140,7 @@ module Informant
     ##
     # Render standard check box field template.
     #
-    def standard_check_box_field_template(l = {})
+    def check_box_field_template(l = {})
       <<-END
       <div id="#{l[:div_id]}" class="field"> 
 	      #{l[:element]} #{l[:label]}#{' <span class="required">*</span>' if l[:required]}<br />
