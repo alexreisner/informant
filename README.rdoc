@@ -1,0 +1,19 @@
+= Informant
+
+Informant is a full-featured form builder for Rails. Well, it _will_ be some day. For now it produces one form layout with a convenient syntax that keeps your view clean.
+
+
+== Examples
+
+Examples coming soon.
+
+
+== To-Do List
+
+* add other form types
+* add support for radio buttons to Standard form type
+* allow optional field templates (in app/views/forms/form_type?)
+* tests
+
+
+Copyright (c) 2009 Alex Reisner, released under the MIT license
