@@ -1,6 +1,6 @@
 = Informant
 
-Informant is a full-featured form builder for Rails. Well, it _will_ be some day. For now it produces one form layout with a convenient syntax that keeps your view clean.
+Informant is a full-featured form builder for Rails which promotes a syntax that keeps your views clean. At least it _will_ be some day. Right now it produces forms with one fixed layout. More coming as soon as I have time.
 
 
 == Examples
