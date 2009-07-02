@@ -81,7 +81,7 @@ module Informant
     #
     def integer_select(method, options = {})
       choices = options[:first]..options[:last]
-		  build_shell(method, options) { select method, choices, options }
+		  select method, choices, options
     end
     
     ##
