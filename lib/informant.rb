@@ -5,7 +5,7 @@ module Informant
     # Declare some options hash keys as custom (not to be passed to built-in
     # form helpers).
     @@custom_field_options = [:label, :required, :description, :decoration]
-    @@custom_label_options = [:colon, :label_for]
+    @@custom_label_options = [:required, :colon, :label_for]
     
     @@custom_options = @@custom_field_options + @@custom_label_options
 
@@ -97,16 +97,18 @@ module Informant
     # Render a field label.
     #
     def label(method, text = nil, options = {})
-      colon = options[:colon].nil? ? false : options[:colon]
-      options.delete :colon
+      colon = false if options[:colon].nil?
       options[:for] = options[:label_for]
+      required = options[:required]
+
+      # remove special options
+      options.delete :colon
       options.delete :label_for
-      if text.blank?
-        text = method.to_s.humanize 
-      else
-        text = text.to_s
-      end
+      options.delete :required
+      
+      text = text.blank?? method.to_s.humanize : text.to_s
       text += ':' if colon
+      text += ' <span class="required">*</span>' if required
       super
     end
     
@@ -146,8 +148,7 @@ module Informant
     def default_field_template(l = {})
       <<-END
       <div id="#{l[:div_id]}" class="field">
-	      #{l[:label]}
-        #{' <span class="required">*</span>' if l[:required]}<br />
+	      #{l[:label]}<br />
         #{l[:element]}#{l[:decoration] if l[:decoration]}
         #{"<p class=\"field_description\">#{l[:description]}</p>" unless l[:description].blank?}
 	    </div>
@@ -160,7 +161,7 @@ module Informant
     def check_box_field_template(l = {})
       <<-END
       <div id="#{l[:div_id]}" class="field"> 
-	      #{l[:element]} #{l[:label]}#{' <span class="required">*</span>' if l[:required]}<br />
+	      #{l[:element]} #{l[:label]}<br />
 	      #{"<p class=\"field_description\">#{l[:description]}</p>" unless l[:description].blank?}
 	    </div>
 	    END
