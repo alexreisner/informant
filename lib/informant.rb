@@ -1,17 +1,53 @@
+##
+# The goal of Informant is to simplify your form code by encapsulating all
+# aspects of a field (label, description, etc) in a single method call. What
+# used to be written as:
+#
+#   <div class="field">
+#     <%= f.label :name %><br />
+#     <%= f.text_field :name %><br />
+#     <p>Please use proper capitalization.</p>
+#   </div>
+#
+# can be written like this with Informant:
+#
+#   <%= f.text_field :name, :description => "Please use proper capitalization." %>
+#
+# The label is inferred from the field name or can be specified explicitly.
+# The complete list of options:
+#
+# <tt>:label</tt> :: add a <label> tag for the field
+# <tt>:colon</tt> :: if true, includes a colon at the end of the label
+# <tt>:description</tt> :: explanatory text displayed underneath the field
+# <tt>:required</tt> :: adds an asterisk if true
+# <tt>:decoration</tt> :: arbitrary string which is appended to the field; often used for a spinner which is initially hidden but becomes visible while a select field's options are being loaded via AJAX
+#
+# Informant contains several form builders, each with the same syntax but
+# different display:
+#
+# Informant::Standard :: displays fields in a <div>
+# Informant::Table :: displays fields in table rows
+# Informant::Simple :: adds no containers at all
+#
+# Please see the documentation for each builder for details. It's also easy to
+# customize the display of any of the included builders. Just create a subclass
+# and override the <tt>default_field_template</tt> and
+# <tt>check_box_field_template</tt> methods.
+#
 module Informant
 
+  ##
+  # Displays fields in a <div>, label on one line, field below it.
+  #
   class Standard < ActionView::Helpers::FormBuilder
   
-    # Declare some options hash keys as custom (not to be passed to built-in
-    # form helpers).
+    # Declare some options as custom (don't pass to built-in form helpers).
     @@custom_field_options = [:label, :required, :description, :decoration]
     @@custom_label_options = [:required, :colon, :label_for]
     
     @@custom_options = @@custom_field_options + @@custom_label_options
 
-    ##
     # Run already-defined helpers through our "shell".
-    #
     helpers = field_helpers +
       %w(select time_zone_select date_select) -
       %w(hidden_field fields_for label)
@@ -35,7 +71,7 @@ module Informant
     end
     
     ##
-    # Standard Rails date_select.
+    # Standard Rails date selector.
     #
     def date_select(method, options = {}, html_options = {})
       options[:include_blank] ||= false
@@ -47,9 +83,10 @@ module Informant
     
     ##
     # This differs from the Rails-default date_select in that it
-    # submits three distinct fields for storage in three separate DB columns.
-    # This allows partial dates (e.g., year only). See FlexDate plugin for
-    # handling partial dates.
+    # submits three distinct fields for storage in three separate attributes.
+    # This allows for partial dates (eg, "1984" or "October 1984").
+    # See the {FlexDate plugin}[http://github.com/alexreisner/flex_date] for
+    # storing and manipulating partial dates.
     #
     def multipart_date_select(method, options = {}, html_options = {})
       options[:include_blank] ||= false
@@ -68,16 +105,18 @@ module Informant
     end
     
     ##
+    # Year select field.
     # Takes options <tt>:start_year</tt> and <tt>:end_year</tt>.
     #
     def year_select(method, options = {})
-      options[:first] = (options[:start_year] or 1801)
-      options[:last]  = (options[:end_year] or Time.now.year)
+      options[:first] = options[:start_year] || 1801
+      options[:last]  = options[:end_year] || Date.today.year
       integer_select(method, options)
     end
     
     ##
-    # Integer select menu.
+    # Integer select field.
+    # Takes options <tt>:first</tt> and <tt>:last</tt>.
     #
     def integer_select(method, options = {})
       choices = options[:first]..options[:last]
@@ -118,7 +157,7 @@ module Informant
     ##
     # Insert a field into its HTML "shell".
     #
-    def build_shell(method, options, template = 'default_field')
+    def build_shell(method, options, template = 'default_field') #:nodoc:
 
       # Build new options hash for custom label options.
       label_options = options.reject{ |i,j| !@@custom_label_options.include? i }
@@ -160,7 +199,7 @@ module Informant
     #
     def check_box_field_template(l = {})
       <<-END
-      <div id="#{l[:div_id]}" class="field"> 
+      <div id="#{l[:div_id]}" class="field">
 	      #{l[:element]} #{l[:label]} #{l[:decoration]}<br />
 	      #{"<p class=\"field_description\">#{l[:description]}</p>" unless l[:description].blank?}
 	    </div>
@@ -169,6 +208,9 @@ module Informant
   end
   
   
+  ##
+  # Displays fields with no surrounding HTML containers.
+  #
   class Simple < Standard
     
     protected # ---------------------------------------------------------------
@@ -185,6 +227,36 @@ module Informant
     #
     def check_box_field_template(l = {})
       "#{l[:element]} #{l[:label]} #{l[:decoration]}"
+    end
+  end
+  
+  
+  ##
+  # Displays fields in table rows: label in first column, field (with
+  # description and decoration) in second.
+  #
+  class Table < Standard
+    
+    protected # ---------------------------------------------------------------
+
+    ##
+    # Render default field template.
+    #
+    def default_field_template(l = {})
+      <<-END
+      <tr id="#{l[:div_id]}" class="field">
+	      <td>#{l[:label]}</td>
+        <td>#{l[:element]}#{l[:decoration]}
+        #{"<p class=\"field_description\">#{l[:description]}</p>" unless l[:description].blank?}</td>
+	    </tr>
+	    END
+    end
+    
+    ##
+    # Render check box field template.
+    #
+    def check_box_field_template(l = {})
+      default_field_template(l)
     end
   end
 end
