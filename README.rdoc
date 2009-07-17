@@ -1,6 +1,6 @@
 = Informant
 
-Informant is a full-featured form builder for Ruby on Rails which promotes a simple syntax that keeps your views clean. The goal is for everything about a field (label, description, error display, etc) to be encapsulated in a single method call.
+Informant is a full-featured form builder for Ruby on Rails which promotes a simple syntax that keeps your views clean. The goal is for everything about a field (label, description, error display, etc) to be encapsulated in a single method call. Examples and general information are below; please read the {API documentation}[http://rdoc.info/projects/alexreisner/informant] for more complete/detailed information.
 
 
 == Installation
@@ -83,9 +83,7 @@ renders HTML like this (assuming the <tt>@car</tt> is a new record):
   </form>
 
 
-Note that the field label is inferred from the name if left blank, and the submit button (unless specified) says "Create" if the record is new, "Update" otherwise.
-
-There are other field options too. For a complete list please generate the API docs (<tt>cd vendor/plugins/informant; rake rdoc</tt>) or read the code comments.
+Note that the field label is inferred from the name if left blank, and the submit button (unless specified) says "Create" if the record is new, "Update" otherwise. There are other field options too. For a complete list please generate the API docs (<tt>cd vendor/plugins/informant; rake rdoc</tt>) or read them {online}[http://rdoc.info/projects/alexreisner/informant].
 
 
 == To-Do List

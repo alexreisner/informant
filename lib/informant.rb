@@ -16,23 +16,23 @@
 # The label is inferred from the field name or can be specified explicitly.
 # The complete list of options:
 #
-# <tt>:label</tt> :: add a <label> tag for the field
-# <tt>:colon</tt> :: if true, includes a colon at the end of the label
-# <tt>:description</tt> :: explanatory text displayed underneath the field
-# <tt>:required</tt> :: adds an asterisk if true
-# <tt>:decoration</tt> :: arbitrary string which is appended to the field; often used for a spinner which is initially hidden but becomes visible while a select field's options are being loaded via AJAX
+# * <tt>:label</tt> - add a <label> tag for the field
+# * <tt>:colon</tt> - if true, includes a colon at the end of the label
+# * <tt>:description</tt> - explanatory text displayed underneath the field
+# * <tt>:required</tt> - adds an asterisk if true
+# * <tt>:decoration</tt> - arbitrary string which is appended to the field (often used for AJAX "spinner")
 #
 # Informant contains several form builders, each with the same syntax but
 # different display:
 #
-# Informant::Standard :: displays fields in a <div>
-# Informant::Table :: displays fields in table rows
-# Informant::Simple :: adds no containers at all
+# * <tt>Informant::Standard</tt> - displays fields in a <div>
+# * <tt>Informant::Table</tt> - displays fields in table rows
+# * <tt>Informant::Simple</tt> - adds no containers at all
 #
 # Please see the documentation for each builder for details. It's also easy to
 # customize the display of any of the included builders. Just create a subclass
-# and override the <tt>default_field_template</tt> and
-# <tt>check_box_field_template</tt> methods.
+# and override the +default_field_template+ and
+# +check_box_field_template+ methods.
 #
 module Informant
 
