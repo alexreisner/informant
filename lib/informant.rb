@@ -137,34 +137,54 @@ module Informant
         :error       => error_message_on(method, options),
         :div_id      => "#{@object.class.to_s.underscore}_#{method}_field",
         :required    => field_options[:required],
-        :decoration  => field_options[:decoration] || false
+        :decoration  => field_options[:decoration] || nil
       }
       send "#{template}_template", locals
     end
 
     ##
-    # Render standard field template.
+    # Render default field template.
     #
     def default_field_template(l = {})
       <<-END
       <div id="#{l[:div_id]}" class="field">
 	      #{l[:label]}<br />
-        #{l[:element]}#{l[:decoration] if l[:decoration]}
+        #{l[:element]}#{l[:decoration]}
         #{"<p class=\"field_description\">#{l[:description]}</p>" unless l[:description].blank?}
 	    </div>
 	    END
     end
     
     ##
-    # Render standard check box field template.
+    # Render check box field template.
     #
     def check_box_field_template(l = {})
       <<-END
       <div id="#{l[:div_id]}" class="field"> 
-	      #{l[:element]} #{l[:label]}<br />
+	      #{l[:element]} #{l[:label]} #{l[:decoration]}<br />
 	      #{"<p class=\"field_description\">#{l[:description]}</p>" unless l[:description].blank?}
 	    </div>
 	    END
+    end
+  end
+  
+  
+  class Simple < Standard
+    
+    protected # ---------------------------------------------------------------
+
+    ##
+    # Render default field template.
+    #
+    def default_field_template(l = {})
+      "#{l[:element]}#{l[:decoration]}"
+    end
+    
+    ##
+    # Render check box field template.
+    #
+    def check_box_field_template(l = {})
+      "#{l[:element]} #{l[:label]} #{l[:decoration]}"
     end
   end
 end
