@@ -127,8 +127,9 @@ module Informant
     # Submit button with smart text and +submit+ class.
     #
     def submit(value = nil, options = {})
-      value = (@object.new_record? ? "Create" : "Update") if value.nil?
-      "<div class=\"submit\">#{super}</div>"
+      options[:class] = "options[:class]} submit"
+      value = (@object.new_record?? "Create" : "Update") if value.nil?
+      "<div class=\"button\">#{super}</div>"
     end
 
     ##
@@ -151,7 +152,7 @@ module Informant
     end
     
     
-    protected # -----------------------------------------------------------------
+    protected # ---------------------------------------------------------------
 
     ##
     # Insert a field into its HTML "shell".

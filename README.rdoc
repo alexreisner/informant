@@ -31,7 +31,7 @@ This view code:
     
     <%= f.integer_select :wheels,
       :label => "Number of wheels",
-      :first => 2, :last => 4, %>
+      :first => 2, :last => 4 %>
       
     <%= f.text_area :description %>
     
@@ -78,8 +78,8 @@ renders HTML like this (assuming the <tt>@car</tt> is a new record):
       <textarea id="car_description" name="car[description]" cols="40" rows="20"></textarea>
     </div>
   
-    <div class="submit">  
-      <input id="car_submit" name="commit" value="Create" type="submit" />
+    <div class="button">  
+      <input class="submit" id="car_submit" name="commit" value="Create" type="submit" />
     </div>
 
   </form>
@@ -90,6 +90,7 @@ Note that the field label is inferred from the name if left blank, and the submi
 
 == To-Do List
 
+* fieldset() block helper
 * field with error display
 * ensure compatibility with Rails i18n (eg, datetime_select, month_select)
 * support for radio buttons
