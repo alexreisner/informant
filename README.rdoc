@@ -77,8 +77,10 @@ renders HTML like this (assuming the <tt>@car</tt> is a new record):
       <label for="car_description">Description</label><br />
       <textarea id="car_description" name="car[description]" cols="40" rows="20"></textarea>
     </div>
-    
-    <input class="submit" id="car_submit" name="commit" value="Create" type="submit" />
+  
+    <div class="submit">  
+      <input id="car_submit" name="commit" value="Create" type="submit" />
+    </div>
 
   </form>
 
@@ -88,7 +90,6 @@ Note that the field label is inferred from the name if left blank, and the submi
 
 == To-Do List
 
-* fix: submit button is not in a container (invalid XHTML)
 * field with error display
 * ensure compatibility with Rails i18n (eg, datetime_select, month_select)
 * support for radio buttons

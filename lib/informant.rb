@@ -127,9 +127,8 @@ module Informant
     # Submit button with smart text and +submit+ class.
     #
     def submit(value = nil, options = {})
-      options = {:class => "submit"}.merge(options)
       value = (@object.new_record? ? "Create" : "Update") if value.nil?
-      super
+      "<div class=\"submit\">#{super}</div>"
     end
 
     ##
