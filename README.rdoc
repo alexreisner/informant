@@ -21,22 +21,24 @@ However, this is not necessary. You can use choose your builder on a form-by-for
 This view code:
 
   <% form_for @car, :builder => Informant::Standard do |f| %>
+    <% f.field_set "Details" do %>
     
-    <%= f.text_field :name,
-      :required => true,
-      :description => "Something Italian, please." %>
-    
-    <%= f.select :manufacturer,
-      %w[Ascari Ferrari Lamborghini Pagani] %>
-    
-    <%= f.integer_select :wheels,
-      :label => "Number of wheels",
-      :first => 2, :last => 4 %>
+      <%= f.text_field :name,
+        :required => true,
+        :description => "Something Italian, please." %>
       
-    <%= f.text_area :description %>
-    
-    <%= f.submit %>
-    
+      <%= f.select :manufacturer,
+        %w[Ascari Ferrari Lamborghini Pagani] %>
+      
+      <%= f.integer_select :wheels,
+        :label => "Number of wheels",
+        :first => 2, :last => 4 %>
+        
+      <%= f.text_area :description %>
+      
+      <%= f.submit %>
+      
+    <% end %>
   <% end %>
 
 renders HTML like this (assuming the <tt>@car</tt> is a new record):
@@ -48,40 +50,44 @@ renders HTML like this (assuming the <tt>@car</tt> is a new record):
       <input name="authenticity_token" value="..." type="hidden" />
     </div>
 
-    <div id="car_name_field" class="field">
-      <label for="car_name">Name <span class="required">*</span></label><br />
-      <input id="car_name" name="car[name]" size="30" value="" type="text" />
-      <p class="field_description">Something Italian, please.</p>
-	  </div>
+    <fieldset>
+      <legend>Details</legend>
 
-    <div id="car_manufacturer_field" class="field">
-      <label for="car_manufacturer">Manufacturer</label><br />
-      <select id="car_manufacturer" name="car[manufacturer]">
-        <option value="Ascari">Ascari</option>
-        <option value="Ferrari">Ferrari</option>
-        <option value="Lamborghini">Lamborghini</option>
-        <option value="Pagani">Pagani</option>
-      </select>
-    </div>
-    
-    <div id="car_wheels_field" class="field">
-      <label for="car_wheels">Number of wheels</label><br />
-      <select id="car_wheels" name="car[wheels]">
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-      </select>
-    </div>
-    
-    <div id="car_description_field" class="field">
-      <label for="car_description">Description</label><br />
-      <textarea id="car_description" name="car[description]" cols="40" rows="20"></textarea>
-    </div>
-  
-    <div class="button">  
-      <input class="submit" id="car_submit" name="commit" value="Create" type="submit" />
-    </div>
+      <div id="car_name_field" class="field">
+        <label for="car_name">Name <span class="required">*</span></label><br />
+        <input id="car_name" name="car[name]" size="30" value="" type="text" />
+        <p class="field_description">Something Italian, please.</p>
+	    </div>
 
+      <div id="car_manufacturer_field" class="field">
+        <label for="car_manufacturer">Manufacturer</label><br />
+        <select id="car_manufacturer" name="car[manufacturer]">
+          <option value="Ascari">Ascari</option>
+          <option value="Ferrari">Ferrari</option>
+          <option value="Lamborghini">Lamborghini</option>
+          <option value="Pagani">Pagani</option>
+        </select>
+      </div>
+      
+      <div id="car_wheels_field" class="field">
+        <label for="car_wheels">Number of wheels</label><br />
+        <select id="car_wheels" name="car[wheels]">
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
+      </div>
+      
+      <div id="car_description_field" class="field">
+        <label for="car_description">Description</label><br />
+        <textarea id="car_description" name="car[description]" cols="40" rows="20"></textarea>
+      </div>
+    
+      <div class="button">  
+        <input class="submit" id="car_submit" name="commit" value="Create" type="submit" />
+      </div>
+      
+    </fieldset>
   </form>
 
 
@@ -90,7 +96,6 @@ Note that the field label is inferred from the name if left blank, and the submi
 
 == To-Do List
 
-* fieldset() block helper
 * field with error display
 * ensure compatibility with Rails i18n (eg, datetime_select, month_select)
 * support for radio buttons

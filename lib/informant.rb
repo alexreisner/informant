@@ -151,6 +151,18 @@ module Informant
       super
     end
     
+    ##
+    # Render a field set (HTML <fieldset>). Takes the legend (optional), an
+    # options hash, and a block in which fields are rendered.
+    #
+    def field_set(legend = nil, options = nil, &block)
+      content = @template.capture(&block)
+      @template.concat(@template.tag(:fieldset, options, true))
+      @template.concat(@template.content_tag(:legend, legend)) unless legend.blank?
+      @template.concat(content)
+      @template.concat("</fieldset>")
+    end
+    
     
     protected # ---------------------------------------------------------------
 
