@@ -97,9 +97,7 @@ Note that the field label is inferred from the name if left blank, and the submi
 == To-Do List
 
 * field with error display
-* ensure compatibility with Rails i18n (eg, datetime_select, month_select)
 * support for radio buttons
-* allow optional field templates (in app/views/forms/form_type?)
 * tests
 
 
