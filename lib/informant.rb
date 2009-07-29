@@ -73,7 +73,7 @@ module Informant
     ##
     # Standard Rails date selector.
     #
-    def date_select(method, options = {}, html_options = {})
+    def date_select(method, options = {})
       options[:include_blank] ||= false
       options[:start_year]    ||= 1801
       options[:end_year]      ||= Time.now.year
@@ -88,7 +88,7 @@ module Informant
     # See the {FlexDate plugin}[http://github.com/alexreisner/flex_date] for
     # storing and manipulating partial dates.
     #
-    def multipart_date_select(method, options = {}, html_options = {})
+    def multipart_date_select(method, options = {})
       options[:include_blank] ||= false
       options[:start_year]    ||= 1801
       options[:end_year]      ||= Time.now.year
@@ -99,7 +99,7 @@ module Informant
           i,j = p
           value = @object.send(method.to_s + '_' + i)
           options[:field_name] = method.to_s + '_' + i
-          eval("@template.select_#{j}(#{value.inspect}, options, html_options)")
+          eval("@template.select_#{j}(#{value.inspect}, options)")
         }.join(' ')
 		  end
     end
