@@ -96,9 +96,10 @@ Note that the field label is inferred from the name if left blank, and the submi
 
 == To-Do List
 
-* submit button template
-* add radio_buttons to example
+* add documentation for all field types
 * tests
+  * custom options don't appear in HTML tags
+  * custom options work
 
 
 Copyright (c) 2009 Alex Reisner, released under the MIT license

@@ -142,12 +142,14 @@ module Informant
     end
     
     ##
-    # Submit button with smart text and +submit+ class.
+    # Submit button with smart default text (if +value+ is nil uses "Create"
+    # for new record or "Update" for old record).
     #
     def submit(value = nil, options = {})
-      options[:class] = "options[:class]} submit"
       value = (@object.new_record?? "Create" : "Update") if value.nil?
-      "<div class=\"button\">#{super}</div>"
+      all_options = options.clone
+      remove_custom_options!(options)
+      build_shell(value, all_options, 'submit_button') { super }
     end
 
     ##
@@ -260,6 +262,15 @@ module Informant
     def radio_buttons_field_template(l = {})
       default_field_template(l)
     end
+
+    ##
+    # Render submit button template.
+    #
+    def submit_button_template(l = {})
+      <<-END
+      <div class="button">#{l[:element]}</div>
+	    END
+    end
   end
 
   
@@ -312,6 +323,18 @@ module Informant
     #
     def check_box_field_template(l = {})
       default_field_template(l)
+    end
+
+    ##
+    # Render submit button template.
+    #
+    def submit_button_template(l = {})
+      <<-END
+      <tr id="#{l[:div_id]}" class="field">
+	      <td></td>
+        <td class="button">#{l[:element]}</td>
+	    </tr>
+	    END
     end
   end
 end
