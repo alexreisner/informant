@@ -96,8 +96,9 @@ Note that the field label is inferred from the name if left blank, and the submi
 
 == To-Do List
 
-* field with error display
-* support for radio buttons
+* submit button template
+* add radio_buttons to example
+* add :step option to integer_select
 * tests
 
 

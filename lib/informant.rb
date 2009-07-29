@@ -58,15 +58,27 @@ module Informant
         when 'check_box':
           template = "check_box_field"
           options[:colon] = false
-        #when 'radio_button':
-        #  template = "radio_button_field"
-        #  options[:colon] = false
+        when 'radio_button':
+          template = "radio_button_choice"
+          options[:colon] = false
         else
           template = "default_field"
         end
         all_options = options.clone
         remove_custom_options!(options)
         build_shell(field, all_options, template) { super }
+      end
+    end
+    
+    ##
+    # Render a set of radio buttons. Takes a method name, an array of
+    # choices (just like a +select+ field), and an Informant options hash.
+    #
+    def radio_buttons(method, choices, options = {})
+      choices.map!{ |i| i.is_a?(Array) ? i : [i] }
+      build_shell(method, options, 'radio_buttons_field') do
+        choices.map{ |c| radio_button method, c[1], :label => c[0],
+          :label_for => [object_name, method, c[1].downcase].join('_') }
       end
     end
     
@@ -192,7 +204,7 @@ module Informant
       }
       send "#{template}_template", locals
     end
-
+    
     ##
     # Remove custom options from an options hash.
     #
@@ -212,7 +224,7 @@ module Informant
 	    </div>
 	    END
     end
-    
+  
     ##
     # Render check box field template.
     #
@@ -224,8 +236,26 @@ module Informant
 	    </div>
 	    END
     end
+
+    ##
+    # Render single radio button. Note that this is the only field
+    # template without an enclosing <tt><div class="field"></tt> because it
+    # is intended for use only within the radio_buttons_template (plural).
+    #
+    def radio_button_choice_template(l = {})
+      <<-END
+      #{l[:element]} #{l[:label]}
+	    END
+    end
+
+    ##
+    # Render a group of radio buttons.
+    #
+    def radio_buttons_field_template(l = {})
+      default_field_template(l)
+    end
   end
-  
+
   
   ##
   # Displays fields with no surrounding HTML containers.
