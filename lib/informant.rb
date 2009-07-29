@@ -118,7 +118,8 @@ module Informant
     
     ##
     # Year select field.
-    # Takes options <tt>:start_year</tt> and <tt>:end_year</tt>.
+    # Takes options <tt>:start_year</tt> and <tt>:end_year</tt>, and
+    # <tt>:step</tt>.
     #
     def year_select(method, options = {})
       options[:first] = options[:start_year] || 1801
@@ -128,10 +129,15 @@ module Informant
     
     ##
     # Integer select field.
-    # Takes options <tt>:first</tt> and <tt>:last</tt>.
+    # Takes options <tt>:first</tt>, <tt>:last</tt>, and <tt>:step</tt>.
     #
     def integer_select(method, options = {})
-      choices = options[:first]..options[:last]
+      options[:step] ||= 1
+      choices = []; i = 0
+      (options[:first]..options[:last]).each do |n|
+        choices << n if i % options[:step] == 0
+        i += 1
+      end
 		  select method, choices, options
     end
     
