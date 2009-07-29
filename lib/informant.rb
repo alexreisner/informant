@@ -65,7 +65,7 @@ module Informant
           template = "default_field"
         end
         all_options = options.clone
-        options.reject!{ |i,j| @@custom_options.include? i }
+        remove_custom_options!(options)
         build_shell(field, all_options, template) { super }
       end
     end
@@ -191,6 +191,13 @@ module Informant
         :decoration  => field_options[:decoration] || nil
       }
       send "#{template}_template", locals
+    end
+
+    ##
+    # Remove custom options from an options hash.
+    #
+    def remove_custom_options!(options) #:nodoc:
+      options.reject!{ |i,j| @@custom_options.include? i }
     end
 
     ##
