@@ -64,9 +64,7 @@ module Informant
         else
           template = "default_field"
         end
-        all_options = options.clone
-        remove_custom_options!(options)
-        build_shell(field, all_options, template) { super }
+        build_shell(field, options, template) { super }
       end
     end
     
@@ -147,9 +145,7 @@ module Informant
     #
     def submit(value = nil, options = {})
       value = (@object.new_record?? "Create" : "Update") if value.nil?
-      all_options = options.clone
-      remove_custom_options!(options)
-      build_shell(value, all_options, 'submit_button') { super }
+      build_shell(value, options, 'submit_button') { super }
     end
 
     ##
@@ -213,13 +209,6 @@ module Informant
       send "#{template}_template", locals
     end
     
-    ##
-    # Remove custom options from an options hash.
-    #
-    def remove_custom_options!(options) #:nodoc:
-      options.reject!{ |i,j| @@custom_options.include? i }
-    end
-
     ##
     # Render default field template.
     #
