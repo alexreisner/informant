@@ -76,7 +76,7 @@ module Informant
       choices.map!{ |i| i.is_a?(Array) ? i : [i] }
       build_shell(method, options, 'radio_buttons_field') do
         choices.map{ |c| radio_button method, c[1], :label => c[0],
-          :label_for => [object_name, method, c[1].downcase].join('_') }
+          :label_for => [object_name, method, c[1].to_s.downcase].join('_') }
       end
     end
     
