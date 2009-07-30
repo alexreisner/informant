@@ -180,7 +180,7 @@ module Informant
     end
     
     
-    protected # ---------------------------------------------------------------
+    private # ---------------------------------------------------------------
 
     ##
     # Insert a field into its HTML "shell".
@@ -268,7 +268,7 @@ module Informant
   #
   class Simple < Standard
     
-    protected # ---------------------------------------------------------------
+    private # ---------------------------------------------------------------
 
     ##
     # Render default field template.
@@ -292,7 +292,7 @@ module Informant
   #
   class Table < Standard
     
-    protected # ---------------------------------------------------------------
+    private # ---------------------------------------------------------------
 
     ##
     # Render default field template.
