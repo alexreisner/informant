@@ -96,6 +96,8 @@ Note that the field label is inferred from the name if left blank, and the submi
 
 == To-Do List
 
+* hierarchical AJAX select fields
+* scrolling checkbox selects
 * add documentation for all field types
 * tests
   * custom options don't appear in HTML tags
