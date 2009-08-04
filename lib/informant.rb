@@ -283,6 +283,13 @@ module Informant
     def check_box_field_template(l = {})
       "#{l[:element]} #{l[:label]} #{l[:decoration]}"
     end
+
+    ##
+    # Render submit button template.
+    #
+    def submit_button_template(l = {})
+      l[:element]
+    end
   end
   
   
