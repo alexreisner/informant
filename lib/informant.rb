@@ -29,9 +29,9 @@
 # * <tt>Informant::Table</tt> - displays fields in table rows
 # * <tt>Informant::Simple</tt> - adds no containers at all
 #
-# Please see the documentation for each builder for details. It's also easy to
-# customize the display of any of the included builders. Just create a subclass
-# and override the +default_field_template+ and
+# Please see the per-method documentation for details. It's also easy to
+# customize the display of any of the included builders. Just create a
+# subclass and override the +default_field_template+ and
 # +check_box_field_template+ methods.
 #
 module Informant
@@ -74,9 +74,51 @@ module Informant
     #
     def radio_buttons(method, choices, options = {})
       choices.map!{ |i| i.is_a?(Array) ? i : [i] }
-      build_shell(method, options, 'radio_buttons_field') do
+      build_shell(method, options, "radio_buttons_field") do
         choices.map{ |c| radio_button method, c[1], :label => c[0],
           :label_for => [object_name, method, c[1].to_s.downcase].join('_') }
+      end
+    end
+    
+    ##
+    # Render a set of check boxes for selecting HABTM-associated objects.
+    # Takes a method name (eg, category_ids), an array of
+    # choices (just like a +select+ field), and an Informant options hash.
+    # In the default template the check boxes are enclosed in a <div> with
+    # CSS class <tt>habtm_check_boxes</tt> which can be styled thusly to
+    # achieve a scrolling list:
+    # 
+    #   .habtm_check_boxes {
+    #     overflow: auto;
+    #     height: 150px;
+    #   }
+    # 
+    # A hidden field is included which eliminates the need to handle the
+    # no-boxes-checked case in the controller, for example:
+    # 
+    #   <input type="hidden" name="article[categories][]" value="" />
+    # 
+    # This ensures that un-checking all boxes will work as expected.
+    # Unfortunately the check_box template is not applied to each check box
+    # (because the standard method of querying the @object for the field's
+    # value does not work--ie, there is no "categories[]" method).
+    #
+    def habtm_check_boxes(method, choices, options = {})
+      choices.map!{ |i| i.is_a?(Array) ? i : [i] }
+      base_id   = "#{object_name}_#{method}"
+      base_name = "#{object_name}[#{method}]"
+
+      @template.hidden_field_tag(
+        "#{base_name}[]", "", :id => "#{base_id}_empty") +
+      build_shell(method, options, "habtm_check_boxes_field") do
+        choices.map do |c|
+          field_id = "#{base_id}_#{c[1].to_s.downcase}"
+          "<div class=\"field\">" + @template.check_box_tag(
+            "#{base_name}[]", "1",
+            @object.send(method).include?(c[1]),
+            :id => field_id
+          ) + @template.label_tag(field_id, c[0]) + "</div>\n"
+        end
       end
     end
     
@@ -95,7 +137,7 @@ module Informant
     # This differs from the Rails-default date_select in that it
     # submits three distinct fields for storage in three separate attributes.
     # This allows for partial dates (eg, "1984" or "October 1984").
-    # See the {FlexDate plugin}[http://github.com/alexreisner/flex_date] for
+    # See {FlexDate}[http://github.com/alexreisner/flex_date] for
     # storing and manipulating partial dates.
     #
     def multipart_date_select(method, options = {})
@@ -115,9 +157,8 @@ module Informant
     end
     
     ##
-    # Year select field.
-    # Takes options <tt>:start_year</tt> and <tt>:end_year</tt>, and
-    # <tt>:step</tt>.
+    # Year select field. Takes options <tt>:start_year</tt> and
+    # <tt>:end_year</tt>, and <tt>:step</tt>.
     #
     def year_select(method, options = {})
       options[:first] = options[:start_year] || 1801
@@ -250,6 +291,19 @@ module Informant
     #
     def radio_buttons_field_template(l = {})
       default_field_template(l)
+    end
+
+    ##
+    # Render a group of HABTM check boxes.
+    #
+    def habtm_check_boxes_field_template(l = {})
+      <<-END
+      <div id="#{l[:div_id]}" class="field">
+	      #{l[:label]}<br />
+        <div class="habtm_check_boxes">#{l[:element]}</div>#{l[:decoration]}
+        #{"<p class=\"field_description\">#{l[:description]}</p>" unless l[:description].blank?}
+	    </div>
+	    END
     end
 
     ##

@@ -94,10 +94,34 @@ renders HTML like this (assuming the <tt>@car</tt> is a new record):
 Note that the field label is inferred from the name if left blank, and the submit button (unless specified) says "Create" if the record is new, "Update" otherwise. There are other field options too. For a complete list please generate the API docs (<tt>cd vendor/plugins/informant; rake rdoc</tt>) or read them {online}[http://rdoc.info/projects/alexreisner/informant].
 
 
+== Available Field Types
+
+Currently the following field methods are available:
+
+* standard types
+  * text_field
+  * text_area
+  * check_box
+  * password_field
+  * file_field
+  * radio_button
+  * hidden_field
+  * select
+  * time_zone_select
+  * date_select
+* extended types
+  * integer_select
+  * year_select
+  * multipart_date_select
+  * habtm_check_boxes
+  * radio_buttons (note: plural)
+
+Please see the inline documentation for arguments to each method.
+
+
 == To-Do List
 
 * hierarchical AJAX select fields
-* scrolling checkbox selects
 * add documentation for all field types
 * tests
   * custom options don't appear in HTML tags
