@@ -4,7 +4,7 @@ require 'rake'
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gem|
-    gem.name        = "Informant"
+    gem.name        = "informant"
     gem.summary     = %Q{A full-featured form builder for Rails.}
     gem.description = %Q{Informant is a full-featured form builder for Ruby on Rails which promotes a simple syntax that keeps your views clean. Everything about a field (label, description, error display, etc) is encapsulated in a single method call.}
     gem.email       = "alex@alexreisner.com"
