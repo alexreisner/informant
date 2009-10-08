@@ -1,24 +1,39 @@
 = Informant
 
-Informant is a full-featured form builder for Ruby on Rails which promotes a simple syntax that keeps your views clean. The goal is for everything about a field (label, description, error display, etc) to be encapsulated in a single method call. Examples and general information are below; please read the {API documentation}[http://rdoc.info/projects/alexreisner/informant] for more complete/detailed information.
+Informant is a full-featured form builder for Ruby on Rails which promotes a simple syntax that keeps your views clean. Everything about a field (label, description, error display, etc) is encapsulated in a single method call. Examples and general information are below; please read the {API documentation}[http://rdoc.info/projects/alexreisner/informant] for more complete/detailed information.
 
 
-== Installation
+== 1. Install
 
-Install using the Rails plugin script:
+Install either as a plugin:
 
   script/plugin install git://github.com/alexreisner/informant.git
+
+or as a gem:
+
+  # add to config/environment.rb:
+  config.gem "informant", :source => "http://gemcutter.org/"
+  
+  # at command prompt:
+  sudo rake gems:install
+
+
+== 2. Configure
 
 If you like you can set one of the Informant builders to be your application-wide default by adding something like this to your ApplicationHelper:
 
   ActionView::Base.default_form_builder = Informant::Standard
 
-However, this is not necessary. You can use choose your builder on a form-by-form basis with the <tt>:builder</tt> option to <tt>form_for</tt>.
+However, this is not necessary. You can use choose your builder on a form-by-form basis with the <tt>:builder</tt> option to <tt>form_for</tt>. The available builders are:
+
+  Informant::Standard
+  Informant::Table
+  Informant::Simple
 
 
-== Example
+== 3. Use
 
-This view code:
+As an example, this view code:
 
   <% form_for @car, :builder => Informant::Standard do |f| %>
     <% f.field_set "Details" do %>

@@ -1,0 +1,7 @@
+= Changelog
+
+Per-release changes to Informant.
+
+== 0.7.0 (2009 Oct 8)
+
+First release.
