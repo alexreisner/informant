@@ -242,7 +242,6 @@ module Informant
         :element     => yield,
         :label       => label(method, field_options[:label], label_options),
         :description => field_options[:description],
-        :error       => error_message_on(method, options),
         :div_id      => "#{@object_name}_#{method}_field",
         :required    => field_options[:required],
         :decoration  => field_options[:decoration] || nil
