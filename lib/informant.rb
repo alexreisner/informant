@@ -113,11 +113,13 @@ module Informant
       build_shell(method, options, "habtm_check_boxes_field") do
         choices.map do |c|
           field_id = "#{base_id}_#{c[1].to_s.downcase}"
-          "<div class=\"field\">" + @template.check_box_tag(
-            "#{base_name}[]", "1",
-            @object.send(method).include?(c[1]),
-            :id => field_id
-          ) + @template.label_tag(field_id, c[0]) + "</div>\n"
+          @template.content_tag(:div, :class => "field") do
+            @template.check_box_tag(
+              "#{base_name}[]", "1",
+              @object.send(method).include?(c[1]),
+              :id => field_id
+            ) + @template.label_tag(field_id, c[0])
+          end
         end
       end
     end
@@ -214,11 +216,10 @@ module Informant
     # options hash, and a block in which fields are rendered.
     #
     def field_set(legend = nil, options = nil, &block)
-      content = @template.capture(&block)
-      @template.concat(@template.tag(:fieldset, options, true))
-      @template.concat(@template.content_tag(:legend, legend)) unless legend.blank?
-      @template.concat(content)
-      @template.concat("</fieldset>")
+      @template.content_tag(:fieldset, options) do
+        (legend.blank?? "" : @template.content_tag(:legend, legend)) +
+        @template.capture(&block)
+      end
     end
     
     
