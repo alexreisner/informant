@@ -247,7 +247,7 @@ module Informant
         :required    => field_options[:required],
         :decoration  => field_options[:decoration] || nil
       }
-      send "#{template}_template", locals
+      send("#{template}_template", locals).html_safe
     end
     
     ##
