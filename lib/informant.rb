@@ -204,7 +204,7 @@ module Informant
       options.delete :label_for
       options.delete :required
       
-      text = text.blank?? method.to_s.humanize : h(text.to_s)
+      text = text.blank?? method.to_s.humanize : @template.send(:h, text.to_s)
       text << ':' if colon
       text << @template.content_tag(:span, "*", :class => "required") if required
       text = text.html_safe
