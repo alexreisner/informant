@@ -2,6 +2,10 @@
 
 Per-release changes to Informant.
 
+== 0.7.1 (2010 Jun 1)
+
+* Add compatibility with Rails 3 and rails_xss plugin.
+
 == 0.7.0 (2009 Oct 8)
 
-First release.
+* First release.
