@@ -1,21 +1,29 @@
 = Informant
 
-Informant is a full-featured form builder for Ruby on Rails which promotes a simple syntax that keeps your views clean. Everything about a field (label, description, error display, etc) is encapsulated in a single method call. Examples and general information are below; please read the {API documentation}[http://rdoc.info/projects/alexreisner/informant] for more complete/detailed information.
+Informant is a full-featured form builder for Ruby on Rails (works with Rails 3) which promotes a simple syntax that keeps your views clean. Everything about a field (label, description, error display, etc) is encapsulated in a single method call. Examples and general information are below; please read the {API documentation}[http://rdoc.info/projects/alexreisner/informant] for more complete/detailed information.
 
 
 == 1. Install
 
+=== a. Rails 3
+
 Install either as a plugin:
 
-  script/plugin install git://github.com/alexreisner/informant.git
+  rails plugin install git://github.com/alexreisner/informant.git
 
 or as a gem:
 
   # add to config/environment.rb:
-  config.gem "informant", :source => "http://gemcutter.org/"
+  config.gem "informant"
   
   # at command prompt:
-  sudo rake gems:install
+  bundle install
+
+=== b. Rails 2
+
+As a plugin:
+
+  script/plugin install git://github.com/alexreisner/informant.git -r rails_2
 
 
 == 2. Configure
