@@ -115,7 +115,7 @@ module Informant
           field_id = "#{base_id}_#{c[1].to_s.downcase}"
           @template.content_tag(:div, :class => "field") do
             @template.check_box_tag(
-              "#{base_name}[]", "1",
+              "#{base_name}[]", c[1],
               @object.send(method).include?(c[1]),
               :id => field_id
             ) + @template.label_tag(field_id, c[0])
