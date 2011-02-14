@@ -64,7 +64,7 @@ module Informant
         else
           template = "default_field"
         end
-        build_shell(field, options, template) { super }
+        build_shell(field, options, template) { super(field, *args) }
       end
     end
     
