@@ -55,10 +55,10 @@ module Informant
       define_method h do |field, *args|
         options = args.detect { |a| a.is_a?(Hash) } || {}
         case h 
-        when 'check_box':
+        when 'check_box'
           template = "check_box_field"
           options[:colon] = false
-        when 'radio_button':
+        when 'radio_button'
           template = "radio_button_choice"
           options[:colon] = false
         else
