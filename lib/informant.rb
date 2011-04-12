@@ -113,13 +113,13 @@ module Informant
       build_shell(method, options, "habtm_check_boxes_field") do
         choices.map do |c|
           field_id = "#{base_id}_#{c[1].to_s.downcase}"
-          @template.content_tag(:div, :class => "field") do
-            @template.check_box_tag(
-              "#{base_name}[]", c[1],
-              @object.send(method).include?(c[1]),
-              :id => field_id
-            ) + @template.label_tag(field_id, c[0])
-          end
+          habtm_single_check_box_template(
+            :name => "#{base_name}[]",
+            :id => field_id,
+            :value => c[1],
+            :checked => @object.send(method).include?(c[1]),
+            :label => @template.label_tag(field_id, c[0])
+          )
         end
       end
     end
@@ -303,6 +303,15 @@ module Informant
         <div class="habtm_check_boxes">#{l[:element].join}</div>#{l[:decoration]}
         #{"<p class=\"field_description\">#{l[:description]}</p>" unless l[:description].blank?}
       </div>
+      END
+    end
+
+    ##
+    # Render a single check box in a HABTM set.
+    #
+    def habtm_single_check_box_template(l = {})
+      <<-END
+        <div class="habtm_single_check_box"><input type="checkbox" name="#{l[:name]}" id="#{l[:id]}" value="#{l[:value]}" #{'checked="checked"' if l[:checked]}} /> #{l[:label]}</div>
       END
     end
 
