@@ -40,11 +40,11 @@ module Informant
   # Displays fields in a <div>, label on one line, field below it.
   #
   class Standard < ActionView::Helpers::FormBuilder
-  
+
     # Declare some options as custom (don't pass to built-in form helpers).
     @@custom_field_options = [:label, :required, :description, :decoration]
     @@custom_label_options = [:required, :colon, :label_for]
-    
+
     @@custom_options = @@custom_field_options + @@custom_label_options
 
     # Run already-defined helpers through our "shell".
@@ -54,7 +54,7 @@ module Informant
     helpers.each do |h|
       define_method h do |field, *args|
         options = args.detect { |a| a.is_a?(Hash) } || {}
-        case h 
+        case h
         when 'check_box'
           template = "check_box_field"
           options[:colon] = false
@@ -67,7 +67,7 @@ module Informant
         build_shell(field, options, template) { super(field, *args) }
       end
     end
-    
+
     ##
     # Render a set of radio buttons. Takes a method name, an array of
     # choices (just like a +select+ field), and an Informant options hash.
@@ -79,7 +79,7 @@ module Informant
           :label_for => [object_name, method, c[1].to_s.downcase].join('_') }
       end
     end
-    
+
     ##
     # Render a set of check boxes for selecting HABTM-associated objects.
     # Takes a method name (eg, category_ids), an array of
@@ -87,17 +87,17 @@ module Informant
     # In the default template the check boxes are enclosed in a <div> with
     # CSS class <tt>habtm_check_boxes</tt> which can be styled thusly to
     # achieve a scrolling list:
-    # 
+    #
     #   .habtm_check_boxes {
     #     overflow: auto;
     #     height: 150px;
     #   }
-    # 
+    #
     # A hidden field is included which eliminates the need to handle the
     # no-boxes-checked case in the controller, for example:
-    # 
+    #
     #   <input type="hidden" name="article[categories][]" value="" />
-    # 
+    #
     # This ensures that un-checking all boxes will work as expected.
     # Unfortunately the check_box template is not applied to each check box
     # (because the standard method of querying the @object for the field's
@@ -123,7 +123,7 @@ module Informant
         end
       end
     end
-    
+
     ##
     # Standard Rails date selector.
     #
@@ -132,9 +132,9 @@ module Informant
       options[:start_year]    ||= 1801
       options[:end_year]      ||= Time.now.year
       options[:label_for]       = "#{object_name}_#{method}_1i"
-		  build_shell(method, options) { super }
+      build_shell(method, options) { super }
     end
-    
+
     ##
     # This differs from the Rails-default date_select in that it
     # submits three distinct fields for storage in three separate attributes.
@@ -148,16 +148,16 @@ module Informant
       options[:end_year]      ||= Time.now.year
       options[:prefix]          = object_name # for date helpers
       options[:label_for]       = "#{object_name}_#{method}_y"
-		  build_shell(method, options) do
+      build_shell(method, options) do
         [['y', 'year'], ['m', 'month'], ['d', 'day']].map{ |p|
           i,j = p
           value = @object.send(method.to_s + '_' + i)
           options[:field_name] = method.to_s + '_' + i
           eval("@template.select_#{j}(#{value.inspect}, options)")
         }.join(' ')
-		  end
+      end
     end
-    
+
     ##
     # Year select field. Takes options <tt>:start_year</tt> and
     # <tt>:end_year</tt>, and <tt>:step</tt>.
@@ -167,7 +167,7 @@ module Informant
       options[:last]  = options[:end_year] || Date.today.year
       integer_select(method, options)
     end
-    
+
     ##
     # Integer select field.
     # Takes options <tt>:first</tt>, <tt>:last</tt>, and <tt>:step</tt>.
@@ -179,9 +179,9 @@ module Informant
         choices << n if i % options[:step] == 0
         i += 1
       end
-		  select method, choices, options
+      select method, choices, options
     end
-    
+
     ##
     # Submit button with smart default text (if +value+ is nil uses "Create"
     # for new record or "Update" for old record).
@@ -203,13 +203,13 @@ module Informant
       options.delete :colon
       options.delete :label_for
       options.delete :required
-      
+
       text = @template.send(:h, text.blank?? method.to_s.humanize : text.to_s)
       text << ':'.html_safe if colon
       text << @template.content_tag(:span, "*", :class => "required") if required
       super
     end
-    
+
     ##
     # Render a field set (HTML <fieldset>). Takes the legend (optional), an
     # options hash, and a block in which fields are rendered.
@@ -220,8 +220,8 @@ module Informant
         @template.capture(&block)
       end
     end
-    
-    
+
+
     private # ---------------------------------------------------------------
 
     ##
@@ -231,14 +231,14 @@ module Informant
 
       # Build new options hash for custom label options.
       label_options = options.reject{ |i,j| !@@custom_label_options.include? i }
-      
+
       # Build new options hash for custom field options.
       field_options = options.reject{ |i,j| !@@custom_field_options.include? i }
 
       # Remove custom options from options hash so things like
       # <tt>include_blank</tt> aren't added as HTML attributes.
       options.reject!{ |i,j| @@custom_options.include? i }
-      
+
       locals = {
         :element     => yield,
         :label       => label(method, field_options[:label], label_options),
@@ -249,30 +249,30 @@ module Informant
       }
       send("#{template}_template", locals).html_safe
     end
-    
+
     ##
     # Render default field template.
     #
     def default_field_template(l = {})
       <<-END
       <div id="#{l[:div_id]}" class="field">
-	      #{l[:label]}<br />
+        #{l[:label]}<br />
         #{l[:element]}#{l[:decoration]}
         #{"<p class=\"field_description\">#{l[:description]}</p>" unless l[:description].blank?}
-	    </div>
-	    END
+      </div>
+      END
     end
-  
+
     ##
     # Render check box field template.
     #
     def check_box_field_template(l = {})
       <<-END
       <div id="#{l[:div_id]}" class="field">
-	      #{l[:element]} #{l[:label]} #{l[:decoration]}<br />
-	      #{"<p class=\"field_description\">#{l[:description]}</p>" unless l[:description].blank?}
-	    </div>
-	    END
+        #{l[:element]} #{l[:label]} #{l[:decoration]}<br />
+        #{"<p class=\"field_description\">#{l[:description]}</p>" unless l[:description].blank?}
+      </div>
+      END
     end
 
     ##
@@ -283,7 +283,7 @@ module Informant
     def radio_button_choice_template(l = {})
       <<-END
       #{l[:element]} #{l[:label]}
-	    END
+      END
     end
 
     ##
@@ -299,11 +299,11 @@ module Informant
     def habtm_check_boxes_field_template(l = {})
       <<-END
       <div id="#{l[:div_id]}" class="field">
-	      #{l[:label]}<br />
+        #{l[:label]}<br />
         <div class="habtm_check_boxes">#{l[:element].join}</div>#{l[:decoration]}
         #{"<p class=\"field_description\">#{l[:description]}</p>" unless l[:description].blank?}
-	    </div>
-	    END
+      </div>
+      END
     end
 
     ##
@@ -312,16 +312,16 @@ module Informant
     def submit_button_template(l = {})
       <<-END
       <div class="button">#{l[:element]}</div>
-	    END
+      END
     end
   end
 
-  
+
   ##
   # Displays fields with no surrounding HTML containers.
   #
   class Simple < Standard
-    
+
     private # ---------------------------------------------------------------
 
     ##
@@ -330,7 +330,7 @@ module Informant
     def default_field_template(l = {})
       "#{l[:element]}#{l[:decoration]}"
     end
-    
+
     ##
     # Render check box field template.
     #
@@ -345,14 +345,14 @@ module Informant
       l[:element]
     end
   end
-  
-  
+
+
   ##
   # Displays fields in table rows: label in first column, field (with
   # description and decoration) in second.
   #
   class Table < Standard
-    
+
     private # ---------------------------------------------------------------
 
     ##
@@ -361,13 +361,13 @@ module Informant
     def default_field_template(l = {})
       <<-END
       <tr id="#{l[:div_id]}" class="field">
-	      <td>#{l[:label]}</td>
+        <td>#{l[:label]}</td>
         <td>#{l[:element]}#{l[:decoration]}
         #{"<p class=\"field_description\">#{l[:description]}</p>" unless l[:description].blank?}</td>
-	    </tr>
-	    END
+      </tr>
+      END
     end
-    
+
     ##
     # Render check box field template.
     #
@@ -381,10 +381,10 @@ module Informant
     def submit_button_template(l = {})
       <<-END
       <tr id="#{l[:div_id]}" class="field">
-	      <td></td>
+        <td></td>
         <td class="button">#{l[:element]}</td>
-	    </tr>
-	    END
+      </tr>
+      END
     end
   end
 end
