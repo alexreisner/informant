@@ -300,7 +300,7 @@ module Informant
       <<-END
       <div id="#{l[:div_id]}" class="field">
 	      #{l[:label]}<br />
-        <div class="habtm_check_boxes">#{l[:element]}</div>#{l[:decoration]}
+        <div class="habtm_check_boxes">#{l[:element].join}</div>#{l[:decoration]}
         #{"<p class=\"field_description\">#{l[:description]}</p>" unless l[:description].blank?}
 	    </div>
 	    END
