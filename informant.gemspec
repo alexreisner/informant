@@ -14,5 +14,7 @@ Gem::Specification.new do |s|
   s.description = "Informant is a full-featured form builder for Ruby on Rails which promotes a simple syntax that keeps your views clean. Everything about a field (label, description, error display, etc) is encapsulated in a single method call."
   s.files       = `git ls-files`.split("\n") - %w[informant.gemspec Gemfile]
   s.require_paths = ["lib"]
-  s.add_dependency('minitest-reporters')
+  s.add_dependency('actionview')
+  s.add_development_dependency('actionpack')
+  s.add_development_dependency('minitest-reporters')
 end
