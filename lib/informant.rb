@@ -1,3 +1,5 @@
+require 'action_view'
+
 ##
 # The goal of Informant is to simplify your form code by encapsulating all
 # aspects of a field (label, description, etc) in a single method call. What
@@ -39,7 +41,7 @@ module Informant
   ##
   # Displays fields in a <div>, label on one line, field below it.
   #
-  class Standard < ActionView::Helpers::FormBuilder
+  class Standard < ::ActionView::Helpers::FormBuilder
 
     # Declare some options as custom (don't pass to built-in form helpers).
     @@custom_field_options = [:label, :required, :description, :decoration]
@@ -48,7 +50,7 @@ module Informant
     @@custom_options = @@custom_field_options + @@custom_label_options
 
     # Run already-defined helpers through our "shell".
-    helpers = field_helpers +
+    helpers = field_helpers.map(&:to_s) +
       %w(select time_zone_select date_select) -
       %w(hidden_field fields_for label)
     helpers.each do |h|
