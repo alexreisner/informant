@@ -1,12 +1,10 @@
-require 'rubygems'
+$LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+require 'informant'
+
+require 'active_support/core_ext/string/output_safety'
+require 'action_controller'
+require 'action_view/test_case'
 require 'minitest/autorun'
 require 'minitest/reporters'
-#require 'active_support'
-#require 'active_support/test_case'
-require 'action_controller'
-#require 'action_view'
-#require 'action_view/test_case'
-#require 'test_help'
-require 'informant'
 
 Minitest::Reporters.use! Minitest::Reporters::DefaultReporter.new

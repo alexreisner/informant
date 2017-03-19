@@ -1,5 +1,3 @@
-require 'action_view'
-
 ##
 # The goal of Informant is to simplify your form code by encapsulating all
 # aspects of a field (label, description, etc) in a single method call. What
@@ -36,6 +34,8 @@ require 'action_view'
 # subclass and override the +default_field_template+ and
 # +check_box_field_template+ methods.
 #
+require 'action_view'
+
 module Informant
 
   ##
