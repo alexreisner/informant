@@ -1,4 +1,4 @@
-# Informant
+# Informant [![Code Climate](https://codeclimate.com/github/alexreisner/informant/badges/gpa.svg)](https://codeclimate.com/github/alexreisner/informant)
 
 Informant is a full-featured form builder for Ruby on Rails (works with Rails 3) which promotes a simple syntax that keeps your views clean. Everything about a field (label, description, error display, etc) is encapsulated in a single method call. Examples and general information are below; please read the [API documentation](http://rdoc.info/projects/alexreisner/informant) for more complete/detailed information.
 
