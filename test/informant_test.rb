@@ -1,11 +1,13 @@
 require 'test_helper'
 
 class InformantTest < ActionView::TestCase
+  include ERB::Util
 
-  test "text field" do
-    # object_name, object, self, options, block
-    p = lambda{ |b| b.text_field(:color) }
-    b = Informant::Standard.new(:car, Object.new, @controller, {}) { p }
-    assert_equal "", b
+  test 'verify rendered field' do
+    # object_name, object, self, options, [block for Rails < 4.0]
+    form = Informant::Standard.new(:car, OpenStruct.new(color: 'red'), self, {})
+    element = form.text_field(:color)
+    expected = "<div id=\"car_color_field\" class=\"field\"><label>Color</label><br /><input type=\"text\" value=\"red\" name=\"car[color]\" id=\"car_color\" /></div>"
+    assert_equal expected, element.gsub(/\n\s+/,'').strip
   end
 end

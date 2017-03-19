@@ -1,71 +1,83 @@
-= Informant
+# Informant
 
-Informant is a full-featured form builder for Ruby on Rails (works with Rails 3) which promotes a simple syntax that keeps your views clean. Everything about a field (label, description, error display, etc) is encapsulated in a single method call. Examples and general information are below; please read the {API documentation}[http://rdoc.info/projects/alexreisner/informant] for more complete/detailed information.
+Informant is a full-featured form builder for Ruby on Rails (works with Rails 3) which promotes a simple syntax that keeps your views clean. Everything about a field (label, description, error display, etc) is encapsulated in a single method call. Examples and general information are below; please read the [API documentation](http://rdoc.info/projects/alexreisner/informant) for more complete/detailed information.
 
 
-== 1. Install
+## 1. Install
 
-=== a. Rails 3
+### Rails 3+
+
+`gem 'informant'`
+
+### a. Old Rails 3
 
 Install either as a plugin:
-
-  rails plugin install git://github.com/alexreisner/informant.git
-
+```
+  rails plugin install git://github.com/alexreisner/informant.git`
+```
 or as a gem:
 
+```ruby
   # add to config/environment.rb:
   config.gem "informant"
-  
+
   # at command prompt:
   bundle install
+```
 
-=== b. Rails 2
+### b. Rails 2
 
 As a plugin:
-
+```
   script/plugin install git://github.com/alexreisner/informant.git -r rails_2
+```
 
-
-== 2. Configure
+## 2. Configure
 
 If you like you can set one of the Informant builders to be your application-wide default by adding something like this to your ApplicationHelper:
 
+```ruby
   ActionView::Base.default_form_builder = Informant::Standard
+```
 
-However, this is not necessary. You can use choose your builder on a form-by-form basis with the <tt>:builder</tt> option to <tt>form_for</tt>. The available builders are:
+However, this is not necessary. You can use choose your builder on a form-by-form basis with the `:builder` option to `form_for`. The available builders are:
 
+```ruby
   Informant::Standard
   Informant::Table
   Informant::Simple
+```
 
-
-== 3. Use
+## 3. Use
 
 As an example, this view code:
 
+```erb
   <% form_for @car, :builder => Informant::Standard do |f| %>
     <% f.field_set "Details" do %>
-    
+
       <%= f.text_field :name,
         :required => true,
         :description => "Something Italian, please." %>
-      
+
       <%= f.select :manufacturer,
         %w[Ascari Ferrari Lamborghini Pagani] %>
-      
+
       <%= f.integer_select :wheels,
         :label => "Number of wheels",
         :first => 2, :last => 4 %>
-        
+
       <%= f.text_area :description %>
-      
+
       <%= f.submit %>
-      
+
     <% end %>
   <% end %>
+```
 
-renders HTML like this (assuming the <tt>@car</tt> is a new record):
+renders HTML like this (assuming the `@car` is a new record):
 
+```html
   <form action="/cars" class="new_car" id="new_car" method="post">
 
     <!-- Rails' form authenticity token -->
@@ -91,7 +103,7 @@ renders HTML like this (assuming the <tt>@car</tt> is a new record):
           <option value="Pagani">Pagani</option>
         </select>
       </div>
-      
+
       <div id="car_wheels_field" class="field">
         <label for="car_wheels">Number of wheels</label><br />
         <select id="car_wheels" name="car[wheels]">
@@ -100,24 +112,24 @@ renders HTML like this (assuming the <tt>@car</tt> is a new record):
           <option value="4">4</option>
         </select>
       </div>
-      
+
       <div id="car_description_field" class="field">
         <label for="car_description">Description</label><br />
         <textarea id="car_description" name="car[description]" cols="40" rows="20"></textarea>
       </div>
-    
-      <div class="button">  
+
+      <div class="button">
         <input class="submit" id="car_submit" name="commit" value="Create" type="submit" />
       </div>
-      
+
     </fieldset>
   </form>
+```
+
+Note that the field label is inferred from the name if left blank, and the submit button (unless specified) says "Create" if the record is new, "Update" otherwise. There are other field options too. For a complete list please generate the API docs (`cd vendor/plugins/informant; rake rdoc`) or read them [online](http://rdoc.info/projects/alexreisner/informant).
 
 
-Note that the field label is inferred from the name if left blank, and the submit button (unless specified) says "Create" if the record is new, "Update" otherwise. There are other field options too. For a complete list please generate the API docs (<tt>cd vendor/plugins/informant; rake rdoc</tt>) or read them {online}[http://rdoc.info/projects/alexreisner/informant].
-
-
-== Available Field Types
+## Available Field Types
 
 Currently the following field methods are available:
 
@@ -142,13 +154,10 @@ Currently the following field methods are available:
 Please see the inline documentation for arguments to each method.
 
 
-== To-Do List
+## To-Do List
 
 * hierarchical AJAX select fields
 * add documentation for all field types
 * tests
   * custom options don't appear in HTML tags
   * custom options work
-
-
-Copyright (c) 2009 Alex Reisner, released under the MIT license
