@@ -239,7 +239,7 @@ module Informant
 
       # Remove custom options from options hash so things like
       # <tt>include_blank</tt> aren't added as HTML attributes.
-      options.reject!{ |i,j| @@custom_options.include? i }
+      options.reject! { |i,j| @@custom_options.include?(i) && i != :required }
 
       locals = {
         :element     => yield,
